@@ -34,16 +34,27 @@ public class FileServiceGet {
                 .collect(Collectors.toList());
     }
 
-    public void getObjectS3(String nameBucket, String keyName){
+    public void saveObjectS3(String nameBucket, String keyName){
         S3Object object = amazonS3.getObject(nameBucket, keyName);
         try(S3ObjectInputStream objectContent = object.getObjectContent();
             FileOutputStream fos = new FileOutputStream(new File(keyName))) {
+
+            var realBytes = objectContent.readAllBytes();
 
             byte[] bytes = new byte[1024];
             int readLen = 0;
             while ((readLen = objectContent.read(bytes)) > 0) {
                 fos.write(bytes, 0, readLen);
             }
+        } catch (IOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public byte[] getObject(String nameBucket, String keyName){
+        S3Object object = amazonS3.getObject(nameBucket, keyName);
+        try(S3ObjectInputStream objectContent = object.getObjectContent()) {
+            return objectContent.readAllBytes();
         } catch (IOException e) {
             throw new ServiceException(e.getMessage());
         }
