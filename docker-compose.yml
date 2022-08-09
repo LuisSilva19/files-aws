@@ -34,7 +34,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - C:/Projeto/sdb:/var/lib/postgressq/data
+      - /tmp/db
 
 volumes:
   localstack-vol:

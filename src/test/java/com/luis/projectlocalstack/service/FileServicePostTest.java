@@ -20,7 +20,7 @@ public class FileServicePostTest {
 
     @Test
     void createBucket(){
-        var bucketFurious = fileServicePost.createBucket("bucketdestroy");
+        fileServicePost.createBucket("bucketdestroy");
         var result = fileServiceGet.doesBucketExist("bucketdestroy");
 
         assertTrue(result);
